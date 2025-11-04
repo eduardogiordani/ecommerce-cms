@@ -10,17 +10,19 @@ import {
 import { Button } from "../ui/button";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { ReactNode } from "react";
+import { Tooltip, TooltipTrigger } from "../ui/tooltip";
 
 type SidebarFormProps = {
     title: string;
     children: ReactNode;
-    onSave: () => void;
+    onSave?: () => void;
+    onDelete?: () => void;
+    loading?: boolean;
 }
 
-export function SidebarForm({ title, children, onSave }: SidebarFormProps) {
+export function SidebarForm({ title, children, onSave, onDelete, loading }: SidebarFormProps) {
     const navigate = useNavigate();
     const location = useLocation();
-
     function handleCloseForm(open: boolean) {
         if (!open) {
             const currentPath = location.pathname;
@@ -39,11 +41,16 @@ export function SidebarForm({ title, children, onSave }: SidebarFormProps) {
                     </SheetDescription>
                 </SheetHeader>
 
+                <div className="px-8">
                 {children}
+                </div>
 
-                <SheetFooter>
+                <SheetFooter className="flex flex-row justify-between">
                     <div className="flex flex-row gap-1">
-                        <Button onClick={onSave}>
+
+                        <Button type="button"
+                        onClick={onSave}
+                                disabled={loading}>
                             Salvar
                         </Button>
 
@@ -53,6 +60,14 @@ export function SidebarForm({ title, children, onSave }: SidebarFormProps) {
                             </Button>
                         </SheetClose>
                     </div>
+                    {onDelete && (                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button variant="destructive" size='icon' onClick={onDelete}>
+                                Deletar
+                            </Button>
+                        </TooltipTrigger>  
+                    </Tooltip>
+                )}
                 </SheetFooter>
             </SheetContent>
         </Sheet>
