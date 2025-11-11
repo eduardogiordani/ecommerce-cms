@@ -9,5 +9,5 @@ export interface ProductDTO {
   price: number;
   active: boolean;
   category: CategoryDTO;
-  brand: BrandDTO;
+  brand?: BrandDTO;
 }
